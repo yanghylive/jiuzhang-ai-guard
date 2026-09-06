@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: check + test + security gate
+    strategy:
+      fail-fast: false
+      matrix:
+        # Windows 纳入单测/语法/安全门禁矩阵（2026-08-28：修复全部 Windows 平台兼容问题后加入）。
+        # 真机 E2E（Authenticode 签名安装、安装器流程）仍需专用 runner，见 docs/Windows真机验证清单.md
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          # 运行时代码零外部依赖（纯 Node 内置模块）；jsdom 为 devDependency（隐私盾浏览器行为测试用）
+      - name: Install dev dependencies (jsdom for privacy browser tests)
+        run: npm ci
+      - name: Syntax check (all scripts)
+        # Windows runner 默认 shell 为 pwsh 不展开 glob；Git for Windows 自带 bash。
+        # 不用 npm run check：npm 在 Windows 上用 cmd 执行脚本，glob 同样不展开。
+        shell: bash
+        run: node --check scripts/*.js scripts/jz/*.js
+      - name: Unit tests
+        # 只跑 test/*.js 单元测试：test/e2e/ 需要真机环境（CDP 9222 / 运行中的 daemon /
+        # 桌面会话），CI runner 上不可用，仅本机执行。bash 下 glob 三平台一致展开。
+        shell: bash
+        run: node --test test/*.js
+      - name: Security gate (6 P1 positive assertions)
+        run: node scripts/security-gate.js

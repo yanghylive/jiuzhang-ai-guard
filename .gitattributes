@@ -1,0 +1,11 @@
+# 行尾纪律：仓库与检出统一 LF。
+# 本仓有字节级一致性测试（pay-kit 分发副本比对）与源码静态正则断言，
+# Windows runner 默认 core.autocrlf 转 CRLF 会直接打破它们。
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.icns binary
+*.bmp binary
+*.zip binary
+*.gz binary
+*.svg text eol=lf

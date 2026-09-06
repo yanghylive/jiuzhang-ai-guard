@@ -1,0 +1,36 @@
+{
+  "name": "jz-ai-guard",
+  "version": "1.1.15",
+  "private": true,
+  "description": "JIUZHANG AI 管家 — WorkBuddy 本地管家",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node scripts/daemon.js",
+    "check": "node --check scripts/*.js scripts/jz/*.js",
+    "test": "node --test test/*.js",
+    "gate": "node scripts/security-gate.js",
+    "verify": "node scripts/verify-live.js",
+    "release": "node scripts/build-release.js",
+    "build:win": "node scripts/build-win.js",
+    "release:win": "node scripts/build-win.js",
+    "publish:win": "node scripts/publish-win.js",
+    "verify:release": "node scripts/verify-release.js",
+    "verify:live-win": "node scripts/verify-live-win.js",
+    "fake:old": "node scripts/fake-old-release.js",
+    "test:e2e-paysync": "node test/e2e/cdp-pay-sync-lifecycle.js",
+    "test:e2e-paysync:sabotage": "node test/e2e/cdp-pay-sync-sabotage.js",
+    "test:e2e-wechat-local": "node test/e2e/wechat-local-mock-e2e.js"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "jsdom": "^26.0.0",
+    "ws": "^8.21.3"
+  },
+  "dependencies": {
+    "jsqr": "^1.4.0",
+    "qrcode": "^1.5.4"
+  }
+}

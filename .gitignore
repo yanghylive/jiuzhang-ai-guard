@@ -1,0 +1,45 @@
+# 运行时产物（不入库）
+runtime/
+backups/
+quarantine/
+restored/
+diagnostics/
+compatibility/
+logs/
+*.log
+
+# 依赖与构建产物
+node_modules/
+dist/
+*.dmg
+*.zip
+*.exe
+*.pkg
+
+# 密钥/凭据（双保险：真实凭据在 ~/.jz-ai-guard/，不在工程内）
+*.pem
+kaypal.env
+.env
+.env.*
+
+# 系统
+.DS_Store
+scripts/builtin/wallpapers/
+
+# Python
+__pycache__/
+*.pyc
+
+# 本地探针/工作区产物（2026-08-29 复查：打包前明确排除）
+.tmp-probe/
+.workbuddy/
+
+# 反向验证（sabotage）阶段1 的单场景 E2E 产物（A0 六轮）
+# 这是「故意破坏守卫后」的预期 FAIL 记录，绝不入库——一旦误提交，
+# 内容长得和正经证据一模一样却全是 allPass=false，而且看不出是被污染的。
+docs/evidence/*.filtered.json
+
+# sabotage partial 运行（单目标 / JZ_PHASE2=0）的降级证据同样不入库——
+# 可复核但不是闸门结论，误提交会让人误当成 canonical 证据。
+docs/evidence/pay-sync-sabotage.partial.json
+assets/icon-work/
